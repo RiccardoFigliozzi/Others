@@ -1,0 +1,22 @@
+#open the libraries
+library(tidyverse)
+library(janitor)
+
+#read the data
+dataset<- read_csv("dir/anonymous-survey-responses.csv") %>% clean_names()
+
+#check the first rows of the dataset
+head(dataset)
+
+#rename the levels of the just_for_fun_do_you_prefer_dogs_or_cat factor so they remove strange symbols
+dataset$just_for_fun_do_you_prefer_dogs_or_cat <- recode(dataset$just_for_fun_do_you_prefer_dogs_or_cat, 'Both ?±?¶' = "Both",
+                                                         'Cats ?±' = "Cats",
+                                                         'Dogs ?¶' = "Dogs",
+                                                         'Neither ?…' = "Neither")
+
+#let's plot the dataset in a barchart
+ggplot(data=dataset, aes(x= just_for_fun_do_you_prefer_dogs_or_cat))+ 
+  geom_bar() + #draw the bars of the chart
+  ggtitle("Dogs or cats?") + 
+  xlab("")
+#You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R
