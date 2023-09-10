@@ -1,0 +1,42 @@
+# In this challenge we will try to fit a model to data following the assumptions
+#So let's open libraries
+library(tidyverse)
+library(boot) # for diagnostic plot
+
+#read in datasets
+kaggle <- read_csv("dir/multipleChoiceResponses.csv")
+stackOverflow <- read_csv("dir/survey_results_public.csv")
+
+# just some data cleaning
+has_compensation <- kaggle %>%
+  filter(CompensationAmount > 0)%>%
+  mutate(CleanedCompensationAmount = str_replace(CompensationAmount, "[[:punct:]]", ""))%>%
+  mutate(CleanedCompensationAmount = as.numeric(CleanedCompensationAmount))
+# the last two lines remove puncutation (some of the salaries has commas in them)
+# and make sure that salary is numeric
+
+# poisson model to predict salary by age
+model <- glm(CleanedCompensationAmount ~ Age, data = has_compensation, family = poisson )
+
+#let's use some diagnostic plots 
+glm.diag.plots(model)
+
+#remove salary above 150,000
+has_compensation <- has_compensation %>%
+  filter(CleanedCompensationAmount < 150000)
+
+#then plot a linear model for salary rage
+model <- glm(CleanedCompensationAmount ~ Age, data = has_compensation, family = poisson)
+
+# and diagnotic plots
+glm.diag.plots(model)
+
+#finally plot and add a regression line
+ggplot(has_compensation, aes(x = Age, y = CleanedCompensationAmount))+
+  geom_point()+
+  geom_smooth(method = "glm", method.args = list(family = "poisson"))
+
+#You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R
+
+
+

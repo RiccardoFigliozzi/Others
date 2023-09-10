@@ -1,0 +1,16 @@
+# Load libraries
+library(tidyverse)
+library(janitor)
+
+# read dataset
+cereal <- clean_names(read_csv("../input/cereal.csv"))
+
+#an find a numeric variable
+str(cereal)
+
+#plot an histogram
+ggplot(cereal, aes(x = calories))+
+geom_histogram(bins=9)+
+ggtitle("Calories intake: cereal")
+
+#You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R

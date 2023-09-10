@@ -1,0 +1,49 @@
+# libraries
+library(tidyverse)
+library(lubridate)
+
+# read dataset
+hospital_charges <- read_csv("C:/Users/ricky/Documents/inpatientCharges.csv") %>%
+  janitor::clean_names() # clean up column names, with clean_names() from the janitor package
+
+# character vector of numbers
+to_parse <- c(100, "10,000", "%100", "$50")
+
+# check to make sure that it is numeric
+print("Classbefore:")
+class(to_parse)
+
+# parse numbers
+parsed_numbers <- parse_number(to_parse)
+
+# little check
+print("Classafter:")
+class(parsed_numbers)
+
+parsed_numbers
+
+# get only columns with the data type "character"
+character_columns <- hospital_charges[, sapply(hospital_charges, class) == "character"]
+
+# look at the columns
+str(character_columns)
+
+# select columns with "charge" or "pay" in the name
+money_columns <- character_columns %>%
+  select(contains("charges"), contains("pay"))
+
+# parse each of those columns as numeric using sapply()
+money_columns_parsed <- sapply(money_columns, parse_number) %>%
+  as_data_frame()
+
+# replace columns with their parsed versions
+hospital_charges_parsed <- hospital_charges %>%
+  select(-contains("charge"), -contains("pay")) %>% # removes the columns we selected earlier
+  bind_cols(money_columns_parsed) # add the columns we parsed earlier
+
+# check if now is correct
+str(hospital_charges_parsed)
+
+# You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R
+
+

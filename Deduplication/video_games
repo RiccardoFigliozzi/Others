@@ -1,0 +1,38 @@
+# libraries we will need
+library(tidyverse)
+library(scrubr) #deduplication
+
+# read data
+
+video_games <- read.csv("../input/steam-video-games/steam-200k.csv", header = F)
+ign_data <- read_csv("../input/20-years-of-games/ign.csv")
+
+#rename columns
+names(video_games) <- c("user_id", "game_title", "behavior_name", "value", "x")
+
+# convert to dataframe
+video_games <- as_data_frame(video_games[, 1:4])
+
+# drop column with row numbers
+ign_data <- select(ign_data, -X1)
+
+duplicated_rows <- data_frame(duplicated = duplicated(ign_data), row = 1:nrow(ign_data)) %>%
+filter(duplicated == T)
+
+# let's plot duplicated rows as black lines
+ggplot(duplicated_rows, aes(x = row))+
+geom_vline(aes(xintercept = row))+ # plot a black line for each duplicated row
+ggtitle("Indexes of duplicated rows")+
+coord_flip()+
+scale_x_reverse() #flip x & y axis and reverse the x axis
+
+duplicated(video_games)%>%
+sum()
+
+video_games_distinct <- distinct(video_games)
+
+# now check out if we removed the 707 duplicated data
+duplicated(video_games_distinct)%>%
+sum()
+
+# You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R

@@ -1,0 +1,13 @@
+#open 'tidyverse' and 'janitor' library
+library(tidyverse)
+library(janitor)
+
+#Let's create a variable called 'nutrition' and read the data frame
+nutrition<- clean_names(read_csv("dir/starbucks_drinkMenu_expanded.csv"))
+#Then see at the numeric variables
+summary(nutrition)
+
+#Finally plot the histogram of sodium content in milligrams specifying the number of bins
+ggplot(nutrition, aes(x = sodium_mg)) + geom_histogram(bins=9) + ggtitle("Sodium Content: Starbucks Menu")
+
+#You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R

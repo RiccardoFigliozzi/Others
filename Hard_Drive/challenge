@@ -1,0 +1,22 @@
+# download libraries
+library(tidyverse)
+library(boot)
+
+# and read datasets
+cameras <- read_csv("../input/1000-cameras-dataset/camera_dataset.csv")
+hard_drives <- read_csv("../input/hard-drive-test-data/harddrive.csv", n_max = 100000)
+
+# let's predict probability, in this dataset 1 indicates that a hard drive did fail and 0 indicates that it didn't 
+model <- glm(failure ~ smart_1_normalized, data = hard_drives, family = "binomial")
+
+# diagnostic plots
+glm.diag.plots(model)
+
+# summary of the model
+summary(model)
+
+ggplot(hard_drives, aes(x = smart_1_normalized, y = failure))+
+geom_point()+
+geom_smooth(method = "glm", method.args = list(family = "binomial"))ù
+
+You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R

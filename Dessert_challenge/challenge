@@ -1,0 +1,35 @@
+#In this challenge we want to predict if a recipe is a dessert based
+
+#let's load the library that we need
+library(tidyverse)
+
+#and read the dataset that we have downloaded
+recipes<- read_csv("dir/epi_r.csv")
+
+#now we are going to clean the datasets from outliers and missing values
+recipes<- recipes %>%
+  filter(calories < 10000) %>% #this is for the outliers
+  na.omit() #and this one is for NA values
+
+#then we wnat to know if the ratings are all numerics
+print("Is this variable numeric?")
+is.numeric(recipes$rating)
+
+#now let's check out if they are all integers
+print("Is this variable integers?")
+all.equal(recipes$rating, as.integer(recipes$rating)) == T 
+
+#plot calories by whether or not it's a dessert
+ggplot(recipes, aes(x =calories , y =dessert )) +
+  geom_point()
+
+#plot & add a regression line
+ggplot(recipes, aes(x =calories , y =dessert )) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"))
+
+#You can find this exercise on Anthony Reese' Kaggle page: https://www.kaggle.com/studentar/kernels?sortBy=voteCount&group=everyone&pageSize=20&userId=1300506&language=R
+
+
+
+
