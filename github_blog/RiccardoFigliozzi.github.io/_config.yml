@@ -1,0 +1,32 @@
+title: "Riccardo Figliozzi"
+author: "Riccardo Figliozzi"
+description: "The best site about Riccardo Figliozzi"
+permalink: /:title/
+lang: "en"
+excerpt_separator: "\n\n\n"
+date_format: "%B %d, %Y"
+
+# Layout
+
+show_excerpts: true        # show article excerpts on the home page
+show_frame: true           # adds a gray frame to the site
+show_sidebar: false        # show a sidebar instead of the usual header
+minimal: false             # use a dark header
+
+# Menu
+
+navigation:                # accepts {file, title, url, icon, sidebaricon}
+  - {file: "index.html"}
+  - {file: "README.md"}
+
+external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
+  - {title: Mail, icon: envelope, url: "mailto:riccardo.figliozzi@gmail.com"}
+  - {title: Github, icon: github, url: "https://github.com/RiccardoFigliozzi"}
+  - {title: Linkedin, icon: linkedin, url: "https://it.linkedin.com/in/riccardo-figliozzi-a717ba203"}
+
+comments:
+#  disqus_shortname: ""    # see https://disqus.com/
+#  isso_domain: ""         # see https://posativ.org/isso/
+
+plugins:
+ - jekyll-feed
